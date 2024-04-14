@@ -1,5 +1,5 @@
-import { cn } from '@/lib/utils'
-import { ArrowBigUp, Clock, Crown, Flame, MessageCircle, TrendingUp } from 'lucide-react'
+import { cn, getRelativeTime } from '@/lib/utils'
+import { ArrowBigUp, MessageCircle } from 'lucide-react'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from './ui/card'
 import { Button } from './ui/button'
 import { useNavigate } from 'react-router-dom'
@@ -14,41 +14,10 @@ export const Feed = ({
     className?: string
     postsArray: Array<any>
     }) => {
-    const dispatch: AppDispatch = useAppDispatch()
-    const navigate = useNavigate()
-    const handleClick = (sortingOption: string) => { 
-        navigate(`/${sortingOption}`)
-        dispatch(setSortingOption(sortingOption))
-    }
-    
+   
     return (
         <div className={cn('flex flex-col py-2 px-11 h-full gap-4', className)}>
-            <div className="flex gap-3 w-full justify-center">
-                <Button
-                    className="flex gap-1 text-md"
-                    onClick={() => handleClick('hot')}
-                >
-                    <Flame /> Hot
-                </Button>
-                <Button
-                    className="flex gap-1 text-md"
-                    onClick={() => handleClick('rising')}
-                >
-                    <TrendingUp /> Rising
-                </Button>
-                <Button
-                    className="flex gap-1 text-md"
-                    onClick={() => handleClick('top')}
-                >
-                    <Crown /> Top
-                </Button>
-                <Button
-                    className="flex gap-1 text-md"
-                    onClick={() => handleClick('new')}
-                >
-                    <Clock /> New
-                </Button>
-            </div>
+           
             {postsArray.map((post) => {
                 const hasImagePattern = /\.(jpeg|jpg|gif|png)$/
                 const urlHasImage = hasImagePattern.test(post.data.url)
@@ -60,14 +29,17 @@ export const Feed = ({
                 return (
                     <Card
                         key={post.data.id}
-                        className={`bg-card grid  auto-rows-auto h-full content-center border-2 border-border rounded-xl shadow-md hover:bg-card-hover transition ${
+                        className={`bg-card grid  auto-rows-auto h-full content-center border-2 border-border rounded-xl shadow-md shadow-black/20 hover:bg-card-hover transition ${
                             urlHasImage || destHasImage || hasVideo
                                 ? 'grid-cols-1'
                                 : 'grid-cols-1'
                         }`}
                     >
                         <CardHeader>
-                            <p className="text-xs">/r/{post.data.subreddit}</p>
+                            <div className="flex flex-row items-center justify-between text-xs">
+                                <p className="">/r/{post.data.subreddit}</p>
+                                <p>{getRelativeTime(post.data.created)}</p>
+                            </div>
                             <CardTitle>
                                 <a
                                     href="/"
