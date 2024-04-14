@@ -1,11 +1,21 @@
 import { getTodaysHottest } from "@/api/getTodaysHottest";
-import { Card, CardContent } from "./ui/card";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "./ui/carousel";
-import Autoplay from 'embla-carousel-autoplay'
+import Autoplay from 'embla-carousel-autoplay';
+import { useEffect, useState } from "react";
+import { TrendingPost } from "./types";
+import { TrendingCard } from "./ui/trendingCard";
 
-export const Trending = async () => {
-    const posts = await getTodaysHottest();
-    console.log(posts);
+export const Trending = () => {
+    const [posts, setPosts] = useState<TrendingPost[]>([]);
+    useEffect(() => {
+        const fetchData = async () => {
+            const posts = await getTodaysHottest();
+            console.log(posts);
+            setPosts(posts);
+        }
+
+        fetchData();
+    }, [])
 
     return (
         <div>
@@ -18,27 +28,25 @@ export const Trending = async () => {
                 plugins={[
                     Autoplay({
                         delay: 4000,
+                        stopOnMouseEnter: true,
+                        stopOnInteraction: true,
+                        stopOnFocusIn: true,
                     }),
                 ]}
-                className="mx-10"
+                className="mx-14"
             >
                 <CarouselContent className="-ml-1">
-                    {Array.from({ length: 5 }).map((_, index) => (
-                        <CarouselItem
-                            key={index}
-                            className="pl-1 md:basis-1/2 lg:basis-1/3 rounded-lg"
-                        >
-                            <div className="p-1 rounded-xl">
-                                <Card className="rounded-xl">
-                                    <CardContent className="flex aspect-square items-center justify-center p-6 rounded-lg shadow-md">
-                                        <span className="text-2xl font-semibold">
-                                            {index + 1}
-                                        </span>
-                                    </CardContent>
-                                </Card>
-                            </div>
-                        </CarouselItem>
-                    ))}
+                    {posts &&
+                        posts.map((post, index) => (
+                            <CarouselItem
+                                key={index}
+                                className="pl-1 md:basis-1/2 lg:basis-1/3 rounded-lg"
+                            >
+                                <div className="p-2 rounded-xl">
+                                    <TrendingCard post={post} />
+                                </div>
+                            </CarouselItem>
+                        ))}
                 </CarouselContent>
                 <CarouselPrevious />
                 <CarouselNext />
