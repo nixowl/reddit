@@ -1,8 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit'
+import postsReducer from './postsSlice'
+import sortingReducer from './sortingSlice'
 
 export const store = configureStore({
     reducer: {
-  
+        posts: postsReducer,
+        sorting: sortingReducer
     },
 })
 

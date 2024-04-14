@@ -1,72 +1,135 @@
-import { cn } from "@/lib/utils"
-import { FeedItem } from "./types";
-import { ArrowBigUp, MessageCircle } from "lucide-react";
-import { Card } from "./ui/card";
+import { cn } from '@/lib/utils'
+import { ArrowBigUp, Clock, Crown, Flame, MessageCircle, TrendingUp } from 'lucide-react'
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from './ui/card'
+import { Button } from './ui/button'
+import { useNavigate } from 'react-router-dom'
+import { AppDispatch } from '@/redux/store'
+import { useAppDispatch } from '@/hooks'
+import { setSortingOption } from '@/redux/sortingSlice'
 
-export const Feed = ({ 
+export const Feed = ({
     className,
-    postsArray
+    postsArray,
 }: {
-        className?: string;
-        postsArray: Array<any>; // TODO: Replace any with FeedItem after fixing
-
+    className?: string
+    postsArray: Array<any>
     }) => {
-    
-       const formatDate = (timestamp: number) => {
-           const date = new Date(timestamp * 1000)
-           return date.toLocaleString() 
-       }
+    const dispatch: AppDispatch = useAppDispatch()
+    const navigate = useNavigate()
+    const handleClick = (sortingOption: string) => { 
+        navigate(`/${sortingOption}`)
+        dispatch(setSortingOption(sortingOption))
+    }
     
     return (
         <div className={cn('flex flex-col py-2 px-11 h-full gap-4', className)}>
-            {postsArray.map((post) => (
-                <Card
-                    key={post.data.id}
-                    className="bg-card grid grid-cols-3 auto-rows-auto py-2 px-4 gap-2 h-full content-center"
+            <div className="flex gap-3 w-full justify-center">
+                <Button
+                    className="flex gap-1 text-md"
+                    onClick={() => handleClick('hot')}
                 >
-                    {post.data.thumbnail ? (
-                        <img
-                            src={
-                                post.data.url
-                                    ? post.data.url
-                                    : post.data.thumbnail
-                            }
-                            className="col-span-1 col-start-1"
-                        />
-                    ) : (
-                        <div className="col-span-1 col-start-1" />
-                    )}
-                    <div className="flex flex-col col-span-2 col-start-2 w-full justify-between h-full">
-                        <div>
-                            <a
-                                href="/"
-                                className="text-lg text-accent-foreground font-bold hover:text-accent transition delay-150"
+                    <Flame /> Hot
+                </Button>
+                <Button
+                    className="flex gap-1 text-md"
+                    onClick={() => handleClick('rising')}
+                >
+                    <TrendingUp /> Rising
+                </Button>
+                <Button
+                    className="flex gap-1 text-md"
+                    onClick={() => handleClick('top')}
+                >
+                    <Crown /> Top
+                </Button>
+                <Button
+                    className="flex gap-1 text-md"
+                    onClick={() => handleClick('new')}
+                >
+                    <Clock /> New
+                </Button>
+            </div>
+            {postsArray.map((post) => {
+                const hasImagePattern = /\.(jpeg|jpg|gif|png)$/
+                const urlHasImage = hasImagePattern.test(post.data.url)
+                const destHasImage = hasImagePattern.test(
+                    post.data.url_overridden_by_dest
+                )
+                const hasVideo = post.data.is_video
+
+                return (
+                    <Card
+                        key={post.data.id}
+                        className={`bg-card grid  auto-rows-auto h-full content-center border-2 border-border rounded-xl shadow-md hover:bg-card-hover transition ${
+                            urlHasImage || destHasImage || hasVideo
+                                ? 'grid-cols-1'
+                                : 'grid-cols-1'
+                        }`}
+                    >
+                        <CardHeader>
+                            <p className="text-xs">/r/{post.data.subreddit}</p>
+                            <CardTitle>
+                                <a
+                                    href="/"
+                                    className="text-card-foreground text-xl font-bold hover:text-accent transition delay-150"
+                                >
+                                    {post.data.title}
+                                </a>
+                            </CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            {urlHasImage || destHasImage ? (
+                                <img
+                                    src={
+                                        urlHasImage
+                                            ? post.data.url
+                                            : destHasImage
+                                              ? post.data.url_overridden_by_dest
+                                              : undefined
+                                    }
+                                    className={`col-span-3 row-span-2  object-cover w-full px-3 pb-3 rounded-[2rem]`}
+                                    alt="thumbnail"
+                                />
+                            ) : hasVideo ? (
+                                <video
+                                    src={
+                                        post.data['media']['reddit_video'][
+                                            'fallback_url'
+                                        ]
+                                    }
+                                    className="col-span-3 row-span-2 object-cover w-full px-3 pb-3 rounded-[2rem]"
+                                    controls
+                                />
+                            ) : null}
+                        </CardContent>
+                        <CardFooter>
+                            <div
+                                className={`${
+                                    urlHasImage || destHasImage || hasVideo
+                                        ? 'col-span-2'
+                                        : 'col-span-1 col-start-1'
+                                } flex flex-col w-full justify-between h-full`}
                             >
-                                {post.data.title}
-                            </a>
-                            <p className="text-primary">
-                                <span className="font-bold">
-                                    {formatDate(post.data.created_utc)}
-                                </span>{' '}
-                                by{' '}
-                                <span className="font-bold">
-                                    {post.data.author}
-                                </span>
-                            </p>
-                            <p>/r/{post.data.subreddit}</p>
-                        </div>
-                        <div className="flex flex-row gap-3">
-                            <p className="flex flex-row items-center">
-                                <ArrowBigUp /> {post.data.ups}
-                            </p>
-                            <p className="flex flex-row items-center">
-                                <MessageCircle />
-                                {post.data.num_comments}
-                            </p>
-                        </div>
-                    </div>
-                </Card>
-            ))}
+                                <div className="flex flex-row gap-3">
+                                    <Button
+                                        variant="secondary"
+                                        className="flex flex-row items-center"
+                                    >
+                                        <ArrowBigUp /> {post.data.ups}
+                                    </Button>
+                                    <Button
+                                        variant="secondary"
+                                        className="flex flex-row items-center"
+                                    >
+                                        <MessageCircle />{' '}
+                                        {post.data.num_comments}
+                                    </Button>
+                                </div>
+                            </div>
+                        </CardFooter>
+                    </Card>
+                )
+            })}
         </div>
     )
 }

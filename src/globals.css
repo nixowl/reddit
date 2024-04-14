@@ -13,6 +13,7 @@
         @apply flex flex-col h-full;
     }
 
+
     :root {
         --background: 231, 15%, 100%;
         --foreground: 60, 30%, 10%;
@@ -27,6 +28,7 @@
         --input: 225, 27%, 51%;
 
         --card: 232, 14%, 98%;
+        --card-hover: 232, 14%, 92%;
         --card-foreground: 60, 30%, 5%;
 
         --primary: 265, 89%, 78%;
@@ -58,6 +60,7 @@
         --input: 225, 27%, 51%;
 
         --card: 232, 14%, 31%;
+        --card-hover: 232, 14%, 35%;
         --card-foreground: 60, 30%, 96%;
 
         --primary: 265, 89%, 78%;

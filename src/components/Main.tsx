@@ -1,24 +1,35 @@
-import { useEffect, useState } from "react"
-import { FeedItem } from "./types"
-import { getHotPosts } from "@/api/getHotPosts"
-import { Feed } from "./Feed"
+import { useEffect } from 'react'
+import { Feed } from './Feed'
+import { AppDispatch, RootState } from '@/redux'
+import { fetchPosts } from '@/redux/postsSlice'
+import { useAppSelector, useAppDispatch } from '@/hooks'
+import { setSortingOption } from '@/redux/sortingSlice'
 
 export const Main = () => {
-const [hotPosts, setHotPosts] = useState<Array<FeedItem>>([])
+    const dispatch: AppDispatch = useAppDispatch()
+    const { posts, isLoading, error } = useAppSelector(
+        (state: RootState) => state.posts
+    )
+    const { sortingOption } = useAppSelector(
+        (state: RootState) => state.sorting
+    )
 
-useEffect(() => {
-    const fetchHotPosts = async () => {
-        const response = await getHotPosts()
-        console.log(response.data.children)
-        setHotPosts(response.data.children)
-    }
+    useEffect(() => {
+        dispatch(fetchPosts('hot'))
+        const option = location.pathname.slice(1)
+        dispatch(setSortingOption(option))
+        dispatch(fetchPosts(sortingOption))
+    }, [location, dispatch, sortingOption])
 
-    fetchHotPosts()
-}, [])
-    
     return (
-        <>
-        <Feed postsArray={hotPosts} />
-        </>
+        <div>
+            {isLoading ? (
+                <p>Loading...</p>
+            ) : error ? (
+                <p>{error}</p>
+            ) : (
+                <Feed postsArray={posts} className="max-w-screen-lg" />
+            )}
+        </div>
     )
 }
