@@ -1,5 +1,6 @@
 import React from 'react'
 import { ThemeToggle } from '../components/ui/themetoggle'
+import { Card } from './ui/card'
 
 
 interface UserDropdownProps {
@@ -15,13 +16,13 @@ const UserDropdown: React.FC<UserDropdownProps> = ({ isOpen, onClose }) => {
             }`}
             onClick={onClose}
         >
-            <div
-                className="absolute right-4 top-10 z-50 p-2 text-base list-none text-foreground rounded-lg shadow-lg bg-background"
+            <Card
+                className="absolute right-4 top-14 z-50 p-2 text-base list-none text-foreground rounded-xl shadow-lg bg-card"
                 onClick={(e) => e.stopPropagation()}
             >
                 {/* Dropdown menu */}
                 <div
-                    className="z-50 my-4 text-foreground list-none divide-y divide-foreground rounded-lg bg-background border-b-[1px] border-foreground w-[170px]"
+                    className="z-50 my-4 text-foreground list-none divide-y divide-foreground rounded-lg bg-card border-b-[1px] border-foreground w-[170px]"
                     id="user-dropdown"
                 >
                     <div className="px-4 py-3">
@@ -61,7 +62,7 @@ const UserDropdown: React.FC<UserDropdownProps> = ({ isOpen, onClose }) => {
                 <div className="mx-auto flex items-center justify-center">
                     <ThemeToggle />
                 </div>
-            </div>
+            </Card>
         </div>
     )
 }
