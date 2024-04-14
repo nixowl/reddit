@@ -9,3 +9,15 @@ export type FeedItem = {
     ups: number
     comments: number
 }
+
+export type TrendingPost = {
+    data: {
+        id: string;
+        url: string;
+        title: string;
+   }
+}
+
+export type TrendingCardProps = {
+    post: TrendingPost
+}
