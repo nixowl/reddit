@@ -6,6 +6,7 @@ import Trending from './components/Trending'
 import './globals.css'
 import { useState } from 'react';
 import UserDropdown from './components/UserDropDown';
+import { SortingButtons } from './components/SortingButtons';
 function App() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -24,6 +25,7 @@ function App() {
                     </Sidebar>
                     <div className="flex flex-col gap-2 col-span-3 m-2">
                         <Trending />
+                        <SortingButtons />
                         <Routes>
                             <Route path="/" element={<Main />} />
                             <Route path="/hot" element={<Main />} />
