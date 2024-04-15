@@ -2,7 +2,7 @@ import { Key, useEffect } from 'react'
 import { Feed } from './Feed'
 import { AppDispatch, RootState } from '@/redux'
 import { fetchPosts } from '@/redux/postsSlice'
-import { useAppSelector, useAppDispatch } from '@/hooks'
+import { useAppSelector, useAppDispatch } from '@/lib/hooks'
 import { setSortingOption } from '@/redux/sortingSlice'
 import { SkeletonCard } from './ui/skeletonCard'
 
@@ -38,7 +38,7 @@ export const Main = () => {
                     <p>{error}</p>
                 </>
             ) : (
-                <Feed postsArray={posts} className="max-w-screen-lg" />
+                <Feed postsArray={posts} className="" />
             )}
         </div>
     )
