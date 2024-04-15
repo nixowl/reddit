@@ -1,7 +1,7 @@
 import { Clock, Crown, Flame, TrendingUp } from "lucide-react"
 import { Button } from "./ui/button"
 import { AppDispatch } from "@/redux/store"
-import { useAppDispatch } from "@/hooks"
+import { useAppDispatch } from "@/lib/hooks" 
 import { useNavigate } from "react-router-dom"
 import { setSortingOption } from "@/redux/sortingSlice"
 
