@@ -4,7 +4,7 @@ import axios from 'axios';
 export const fetchPosts = createAsyncThunk('posts/fetchPosts',
     async (sortingOption: string) => {
         const response = await axios.get(`https://www.reddit.com/${sortingOption}.json`)
-        return response.data.data.children // TODO - add type
+        return response.data.data.children
     }
 )
 
