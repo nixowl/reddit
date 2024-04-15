@@ -1,25 +1,24 @@
-import { getTodaysHottest } from "@/api/getTodaysHottest";
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "./ui/carousel";
-import Autoplay from 'embla-carousel-autoplay';
-import { useEffect, useState } from "react";
-import { TrendingPost } from "./types";
-import { TrendingCard } from "./ui/trendingCard";
+import { getTodaysHottest } from '@/api/getPosts'
+import { Carousel, CarouselContent, CarouselItem } from './ui/carousel'
+import Autoplay from 'embla-carousel-autoplay'
+import { useEffect, useState } from 'react'
+import { TrendingPost } from '../types'
+import { TrendingCard } from './ui/trendingCard'
 
 export const Trending = () => {
-    const [posts, setPosts] = useState<TrendingPost[]>([]);
+    const [posts, setPosts] = useState<TrendingPost[]>([])
     useEffect(() => {
         const fetchData = async () => {
-            const posts = await getTodaysHottest();
-            console.log(posts);
-            setPosts(posts);
+            const posts = await getTodaysHottest()
+            console.log(posts)
+            setPosts(posts)
         }
 
-        fetchData();
+        fetchData()
     }, [])
 
     return (
-        <div>
-            <h2 className="text-xl">Top posts today</h2>
+        <div className="">
             <Carousel
                 opts={{
                     align: 'start',
@@ -33,26 +32,24 @@ export const Trending = () => {
                         stopOnFocusIn: true,
                     }),
                 ]}
-                className="mx-14"
+                className=""
             >
                 <CarouselContent className="-ml-1">
                     {posts &&
                         posts.map((post, index) => (
                             <CarouselItem
                                 key={index}
-                                className="pl-1 md:basis-1/2 lg:basis-1/3 rounded-lg"
+                                className="pl-1 md:basis-1/2 lg:basis-1/3 rounded-lg p-2"
                             >
-                                <div className="p-2 rounded-xl">
+                                <div className="rounded-xl">
                                     <TrendingCard post={post} />
                                 </div>
                             </CarouselItem>
                         ))}
                 </CarouselContent>
-                <CarouselPrevious />
-                <CarouselNext />
             </Carousel>
         </div>
     )
 }
 
-export default Trending;
+export default Trending
