@@ -1,14 +1,25 @@
 import Header from './components/Header'
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import { Main } from './components/Main'
-import Sidebar from './components/Sidebar'
+import {
+    DefaultSidebarContent,
+    Sidebar,
+    SubredditSidebarContent,
+} from './components/Sidebar'
 import Trending from './components/Trending'
 import './globals.css'
-import { useState } from 'react';
-import UserDropdown from './components/UserDropDown';
-import { SortingButtons } from './components/SortingButtons';
+import { RootState } from './redux/store'
+import { useState } from 'react'
+import UserDropdown from './components/UserDropDown'
+import { SortingButtons } from './components/SortingButtons'
+import { useAppSelector } from './lib/hooks'
+import Subreddit from './components/Subreddit'
+
 function App() {
-    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const { currentSubreddit } = useAppSelector(
+        (state: RootState) => state.subreddit
+    )
+    const [isMenuOpen, setIsMenuOpen] = useState(false)
 
     return (
         <Router>
@@ -19,20 +30,115 @@ function App() {
                     onClose={() => setIsMenuOpen(false)}
                 />
 
-                <section className="flex-1 bg-background grid grid-cols-4 auto-rows-auto gap-1">
-                    <Sidebar className="col-span-1 bg-background text-muted-foreground m-2">
-                        hello
-                    </Sidebar>
-                    <div className="flex flex-col gap-2 col-span-3 m-2">
-                        <Trending />
-                        <SortingButtons />
+                <section className="flex-1 bg-background grid grid-cols-4 auto-rows-auto gap-1 max-w-screen-xl">
+                    <Routes>
+                        <Route
+                            path={'/'}
+                            element={
+                                <Sidebar className="col-span-1 m-2 pt-4">
+                                    <DefaultSidebarContent />
+                                </Sidebar>
+                            }
+                        />
+                        <Route
+                            path={'/hot'}
+                            element={
+                                <Sidebar className="col-span-1 m-2 pt-4">
+                                    <DefaultSidebarContent />
+                                </Sidebar>
+                            }
+                        />
+                        <Route
+                            path={'/new'}
+                            element={
+                                <Sidebar className="col-span-1 m-2 pt-4">
+                                    <DefaultSidebarContent />
+                                </Sidebar>
+                            }
+                        />
+                        <Route
+                            path={'/top'}
+                            element={
+                                <Sidebar className="col-span-1 m-2 pt-4">
+                                    <DefaultSidebarContent />
+                                </Sidebar>
+                            }
+                        />
+                        <Route
+                            path={'/rising'}
+                            element={
+                                <Sidebar className="col-span-1 m-2 pt-4">
+                                    <DefaultSidebarContent />
+                                </Sidebar>
+                            }
+                        />
+                        <Route
+                            path="/r/:subreddit"
+                            element={
+                                <Sidebar className="col-span-1 m-2 pt-4">
+                                    <SubredditSidebarContent
+                                        subreddit={currentSubreddit}
+                                    />
+                                </Sidebar>
+                            }
+                        />
+                    </Routes>
+                    <div className="flex flex-col gap-2 col-span-3 mt-20 ">
                         <Routes>
-                            <Route path="/" element={<Main />} />
-                            <Route path="/hot" element={<Main />} />
-                            <Route path="/new" element={<Main />} />
-                            <Route path="/top" element={<Main />} />
-                            <Route path="/rising" element={<Main />} />
-                            <Route path="/:subreddit" element={<Main />} />
+                            <Route
+                                path="/"
+                                element={
+                                    <>
+                                        <Trending />
+                                        <SortingButtons />
+                                        <Main />
+                                    </>
+                                }
+                            />
+                            <Route
+                                path="/hot"
+                                element={
+                                    <>
+                                        <Trending />
+                                        <SortingButtons />
+                                        <Main />
+                                    </>
+                                }
+                            />
+                            <Route
+                                path="/new"
+                                element={
+                                    <>
+                                        <Trending />
+                                        <SortingButtons />
+                                        <Main />
+                                    </>
+                                }
+                            />
+                            <Route
+                                path="/top"
+                                element={
+                                    <>
+                                        <Trending />
+                                        <SortingButtons />
+                                        <Main />
+                                    </>
+                                }
+                            />
+                            <Route
+                                path="/rising"
+                                element={
+                                    <>
+                                        <Trending />
+                                        <SortingButtons />
+                                        <Main />
+                                    </>
+                                }
+                            />
+                            <Route
+                                path="/r/:subreddit"
+                                element={<Subreddit />}
+                            />
                             <Route path="/posts/:id" element={<Main />} />
                         </Routes>
                     </div>
