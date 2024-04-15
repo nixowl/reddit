@@ -3,6 +3,7 @@ import postsReducer from './postsSlice'
 import sortingReducer from './sortingSlice'
 import subredditReducer from './subredditSlice'
 import postPageReducer from './postPageSlice'
+import authorizedSlice from './authorizedSlice'
 
 export const store = configureStore({
     reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
         sorting: sortingReducer,
         subreddit: subredditReducer, 
         postPage: postPageReducer,
+        authorizedSlice: authorizedSlice,
     },
 })
 
