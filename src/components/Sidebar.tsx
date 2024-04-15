@@ -2,11 +2,10 @@ import { getSubreddits } from "@/api/getSubreddits";
 import { cn } from "@/lib/utils"
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { AppDispatch } from "@/redux/store";
-import { useAppDispatch } from "@/lib/hooks";
+import { AppDispatch, RootState } from "@/redux/store";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { setCurrentSubreddit } from "@/redux/subredditSlice";
-import { SortingButtons } from "./SortingButtons";
-
+import { ThemeToggle } from "./ui/themetoggle";
 export const Sidebar = ({
     className,
     children,
@@ -15,11 +14,16 @@ export const Sidebar = ({
     children?: React.ReactNode
 }) => {
 
+    const { isAuthorized } = useAppSelector(
+        (state: RootState) => state.authorizedSlice
+    )
+
     return (
         <div
-            className={cn('flex flex-col p-4 border-r-[1px] h-full', className)}
+            className={cn('flex-col p-4 bg-background absolute md:static border-r-[1px] z-40 h-full', className)}
         >
             {children}
+            {!isAuthorized && <ThemeToggle />}
         </div>
     )
 }

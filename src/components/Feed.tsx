@@ -43,7 +43,7 @@ export const Feed = ({
                 return (
                     <Card
                         key={post.data.id}
-                        className={`bg-card grid  auto-rows-auto h-full content-center border-[1px] border-border rounded-xl shadow-md shadow-black/20 transition-all ${
+                        className={`bg-card grid  auto-rows-auto h-full content-center border-[1px] border-border rounded-xl transition-all ${
                             urlHasImage || destHasImage || hasVideo
                                 ? 'grid-cols-1'
                                 : 'grid-cols-1'

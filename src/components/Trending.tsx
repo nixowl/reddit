@@ -4,6 +4,7 @@ import Autoplay from 'embla-carousel-autoplay'
 import { useEffect, useState } from 'react'
 import { TrendingPost } from '../types'
 import { TrendingCard } from './ui/trendingCard'
+import { WheelGesturesPlugin } from 'embla-carousel-wheel-gestures'
 
 export const Trending = () => {
     const [posts, setPosts] = useState<TrendingPost[]>([])
@@ -31,6 +32,7 @@ export const Trending = () => {
                         stopOnInteraction: true,
                         stopOnFocusIn: true,
                     }),
+                    WheelGesturesPlugin(),
                 ]}
                 className=""
             >
@@ -39,7 +41,7 @@ export const Trending = () => {
                         posts.map((post, index) => (
                             <CarouselItem
                                 key={index}
-                                className="pl-1 md:basis-1/2 lg:basis-1/3 rounded-lg p-2"
+                                className="pl-1 sm:basis-1/2 lg:basis-1/3 rounded-lg p-2"
                             >
                                 <div className="rounded-xl">
                                     <TrendingCard post={post} />

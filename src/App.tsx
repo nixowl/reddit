@@ -14,6 +14,7 @@ import UserDropdown from './components/UserDropDown'
 import { SortingButtons } from './components/SortingButtons'
 import { useAppSelector } from './lib/hooks'
 import Subreddit from './components/Subreddit'
+import { AuthorizationCallback } from './components/AuthorizationCallback'
 
 function App() {
     const { currentSubreddit } = useAppSelector(
@@ -30,12 +31,12 @@ function App() {
                     onClose={() => setIsMenuOpen(false)}
                 />
 
-                <section className="flex-1 bg-background grid grid-cols-4 auto-rows-auto gap-1 max-w-screen-xl">
+                <section className="flex-1 bg-gradient-to-tl from-slate-50 to slate-200 dark:from-slate-950 dark:to-slate-800  grid grid-cols-4 auto-rows-auto gap-1 max-w-screen-xl">
                     <Routes>
                         <Route
                             path={'/'}
                             element={
-                                <Sidebar className="col-span-1 m-2 pt-4">
+                                <Sidebar className="col-span-1 pt-4">
                                     <DefaultSidebarContent />
                                 </Sidebar>
                             }
@@ -43,7 +44,7 @@ function App() {
                         <Route
                             path={'/hot'}
                             element={
-                                <Sidebar className="col-span-1 m-2 pt-4">
+                                <Sidebar className="col-span-1 pt-4">
                                     <DefaultSidebarContent />
                                 </Sidebar>
                             }
@@ -51,7 +52,7 @@ function App() {
                         <Route
                             path={'/new'}
                             element={
-                                <Sidebar className="col-span-1 m-2 pt-4">
+                                <Sidebar className="col-span-1 pt-4">
                                     <DefaultSidebarContent />
                                 </Sidebar>
                             }
@@ -59,7 +60,7 @@ function App() {
                         <Route
                             path={'/top'}
                             element={
-                                <Sidebar className="col-span-1 m-2 pt-4">
+                                <Sidebar className="col-span-1 pt-4">
                                     <DefaultSidebarContent />
                                 </Sidebar>
                             }
@@ -67,7 +68,7 @@ function App() {
                         <Route
                             path={'/rising'}
                             element={
-                                <Sidebar className="col-span-1 m-2 pt-4">
+                                <Sidebar className="col-span-1 pt-4">
                                     <DefaultSidebarContent />
                                 </Sidebar>
                             }
@@ -75,7 +76,7 @@ function App() {
                         <Route
                             path="/r/:subreddit"
                             element={
-                                <Sidebar className="col-span-1 m-2 pt-4">
+                                <Sidebar className="col-span-1 pt-4">
                                     <SubredditSidebarContent
                                         subreddit={currentSubreddit}
                                     />
@@ -83,7 +84,7 @@ function App() {
                             }
                         />
                     </Routes>
-                    <div className="flex flex-col gap-2 col-span-3 mt-20 ">
+                    <div className="flex flex-col gap-2 col-span-4 md:col-span-3 m-4 mt-24">
                         <Routes>
                             <Route
                                 path="/"
@@ -140,6 +141,10 @@ function App() {
                                 element={<Subreddit />}
                             />
                             <Route path="/posts/:id" element={<Main />} />
+                            <Route
+                                path="/authorize_callback/*"
+                                element={<AuthorizationCallback />}
+                            />
                         </Routes>
                     </div>
                 </section>

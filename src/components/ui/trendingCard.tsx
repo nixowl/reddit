@@ -30,7 +30,7 @@ export const TrendingCard = ({ post }: TrendingCardProps) => {
                             r/{post.data.subreddit}
                         </a>
                             <p
-                                className="text-md">
+                                className="text-md text-pretty">
                                 {post.data.title.length > 80 ? post.data.title.slice(0, 80) + '...' : post.data.title}
                             </p>
                         
